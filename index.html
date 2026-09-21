@@ -22,7 +22,6 @@ button {
   border: 0;
   border-radius: 10px;
   padding: 11px 14px;
-  font-size: 16px;
   background: #2563eb;
   color: white;
   cursor: pointer;
@@ -278,7 +277,7 @@ label {
 
 .import-secondary { background: #475569; }
 
-/* ---------- MODAL ---------- */
+/* ---------- MODALS ---------- */
 
 .modal {
   display: none;
@@ -329,6 +328,51 @@ label {
   text-align: center;
   padding: 50px 20px;
   color: #cbd5e1;
+}
+
+/* ---------- HOME SCREEN GUIDE ---------- */
+
+.home-guide {
+  text-align: center;
+}
+
+.home-guide-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.home-guide h2 {
+  margin: 4px 0 8px;
+}
+
+.home-guide-intro {
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.home-guide-instructions {
+  text-align: left;
+  background: #334155;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 16px 0 20px;
+}
+
+.home-guide-instructions h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.home-guide-instructions p {
+  color: #e2e8f0;
+  line-height: 1.45;
+  margin: 10px 0;
+}
+
+.home-guide-button {
+  width: 100%;
+  font-weight: 600;
 }
 
 @media (max-width: 430px) {
@@ -420,7 +464,6 @@ label {
   </div>
 </div>
 
-
 <!-- ==================== APP ==================== -->
 
 <div id="appScreen">
@@ -475,7 +518,6 @@ label {
     <div id="calendar" class="calendar"></div>
   </div>
 
-
   <div class="card">
     <h2>Month Summary</h2>
 
@@ -524,7 +566,6 @@ label {
     </div>
   </div>
 
-
   <div class="card settings">
 
     <h2>Settings</h2>
@@ -557,6 +598,86 @@ label {
 </div>
 </div>
 
+<!-- ==================== HOME SCREEN GUIDE ==================== -->
+
+<div id="homeScreenGuide" class="modal">
+
+  <div class="modal-content home-guide">
+
+    <div class="home-guide-icon">📲</div>
+
+    <h2>Add Tip Tracker to your Home Screen</h2>
+
+    <p class="home-guide-intro">
+      Get one-tap access to Tip Tracker and use it more like an app.
+    </p>
+
+    <div id="iosInstructions"
+         class="home-guide-instructions"
+         style="display:none;">
+
+      <h3>iPhone / iPad</h3>
+
+      <p>1. Open Tip Tracker in <strong>Safari</strong>.</p>
+
+      <p>
+        2. Tap the <strong>Share</strong> button
+        (the square with the ↑ arrow).
+      </p>
+
+      <p>
+        3. Scroll down and tap
+        <strong>Add to Home Screen</strong>.
+      </p>
+
+      <p>4. Tap <strong>Add</strong>.</p>
+
+    </div>
+
+    <div id="androidInstructions"
+         class="home-guide-instructions"
+         style="display:none;">
+
+      <h3>Android</h3>
+
+      <p>1. Open Tip Tracker in <strong>Chrome</strong>.</p>
+
+      <p>2. Tap the <strong>⋮</strong> menu.</p>
+
+      <p>
+        3. Tap <strong>Add to Home screen</strong>
+        or <strong>Install app</strong>.
+      </p>
+
+      <p>
+        4. Tap <strong>Add</strong> or
+        <strong>Install</strong>.
+      </p>
+
+    </div>
+
+    <div id="otherInstructions"
+         class="home-guide-instructions"
+         style="display:none;">
+
+      <h3>Add Tip Tracker to your device</h3>
+
+      <p>
+        Open your browser menu and look for
+        <strong>Add to Home Screen</strong> or
+        <strong>Install App</strong>.
+      </p>
+
+    </div>
+
+    <button
+      class="home-guide-button"
+      onclick="dismissHomeScreenGuide()">
+      Got it
+    </button>
+
+  </div>
+</div>
 
 <!-- ==================== SHIFT MODAL ==================== -->
 
@@ -590,7 +711,6 @@ label {
          step="0.01"
          inputmode="decimal">
 
-
   <div class="results">
 
     <div class="result-row">
@@ -620,7 +740,6 @@ label {
 
   </div>
 
-
   <div class="actions">
     <button class="cancel" onclick="closeModal()">Cancel</button>
     <button class="delete" onclick="deleteShift()">Delete</button>
@@ -629,7 +748,6 @@ label {
 
 </div>
 </div>
-
 
 <!-- ==================== FIREBASE ==================== -->
 
@@ -660,7 +778,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyC3GLX8T71A0RdOCkxyK4G0RoaAPbAcPlE",
   authDomain: "tip-tracker-6242f.firebaseapp.com",
@@ -671,11 +788,9 @@ const firebaseConfig = {
   measurementId: "G-Z76FFXSJT7"
 };
 
-
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-
 
 /* ==================== STATE ==================== */
 
@@ -689,7 +804,7 @@ let settings = {
 let currentDate = new Date();
 let selectedDate = null;
 let currentUser = null;
-
+let showGuideAfterSignup = false;
 
 /* ==================== HELPERS ==================== */
 
@@ -701,11 +816,9 @@ const money = n =>
     currency: "USD"
   }).format(Number(n) || 0);
 
-
 function dateKey(year, month, day) {
   return `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 }
-
 
 function setSyncStatus(message, type = "") {
   const el = $("syncStatus");
@@ -718,7 +831,6 @@ function setSyncStatus(message, type = "") {
   if (type) el.classList.add(type);
 }
 
-
 function showAuthMessage(message, type = "error") {
   const el = $("authMessage");
 
@@ -726,14 +838,12 @@ function showAuthMessage(message, type = "error") {
   el.className = `auth-message ${type}`;
 }
 
-
 function clearAuthMessage() {
   const el = $("authMessage");
 
   el.textContent = "";
   el.className = "auth-message";
 }
-
 
 function friendlyError(error) {
 
@@ -773,6 +883,51 @@ function friendlyError(error) {
          "Something went wrong. Please try again.";
 }
 
+/* ==================== HOME SCREEN GUIDE ==================== */
+
+function isRunningAsInstalledApp() {
+
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function showHomeScreenGuide() {
+
+  if (isRunningAsInstalledApp()) {
+    return;
+  }
+
+  const userAgent =
+    navigator.userAgent || navigator.vendor || "";
+
+  const isIOS =
+    /iPad|iPhone|iPod/.test(userAgent) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  const isAndroid =
+    /Android/i.test(userAgent);
+
+  $("iosInstructions").style.display =
+    isIOS ? "block" : "none";
+
+  $("androidInstructions").style.display =
+    isAndroid ? "block" : "none";
+
+  $("otherInstructions").style.display =
+    (!isIOS && !isAndroid) ? "block" : "none";
+
+  $("homeScreenGuide").style.display = "flex";
+}
+
+window.dismissHomeScreenGuide = function() {
+
+  $("homeScreenGuide").style.display = "none";
+};
 
 /* ==================== AUTH UI ==================== */
 
@@ -782,13 +937,11 @@ window.showCreateAccount = function() {
   $("createForm").style.display = "block";
 };
 
-
 window.showLogin = function() {
   clearAuthMessage();
   $("createForm").style.display = "none";
   $("loginForm").style.display = "block";
 };
-
 
 window.createAccount = async function() {
 
@@ -819,6 +972,8 @@ window.createAccount = async function() {
 
   try {
 
+    showGuideAfterSignup = true;
+
     await createUserWithEmailAndPassword(
       auth,
       email,
@@ -826,6 +981,8 @@ window.createAccount = async function() {
     );
 
   } catch (error) {
+
+    showGuideAfterSignup = false;
 
     showAuthMessage(friendlyError(error));
 
@@ -835,7 +992,6 @@ window.createAccount = async function() {
     button.textContent = "Create Account";
   }
 };
-
 
 window.loginUser = async function() {
 
@@ -872,7 +1028,6 @@ window.loginUser = async function() {
   }
 };
 
-
 window.logoutUser = async function() {
 
   try {
@@ -884,7 +1039,6 @@ window.logoutUser = async function() {
     alert(friendlyError(error));
   }
 };
-
 
 window.resetPassword = async function() {
 
@@ -914,28 +1068,23 @@ window.resetPassword = async function() {
   }
 };
 
-
 /* ==================== FIRESTORE PATHS ==================== */
 
 function userDocRef() {
   return doc(db, "users", currentUser.uid);
 }
 
-
 function settingsDocRef() {
   return doc(db, "users", currentUser.uid, "settings", "profile");
 }
-
 
 function shiftsCollectionRef() {
   return collection(db, "users", currentUser.uid, "shifts");
 }
 
-
 function shiftDocRef(key) {
   return doc(db, "users", currentUser.uid, "shifts", key);
 }
-
 
 /* ==================== LOAD CLOUD DATA ==================== */
 
@@ -966,7 +1115,6 @@ async function loadCloudData() {
       await setDoc(settingsDocRef(), settings);
     }
 
-
     const shiftSnapshot =
       await getDocs(shiftsCollectionRef());
 
@@ -977,7 +1125,6 @@ async function loadCloudData() {
       shifts[documentSnapshot.id] =
         documentSnapshot.data();
     });
-
 
     $("defaultWage").value = settings.wage;
     $("taxRate").value = settings.tax;
@@ -1001,7 +1148,6 @@ async function loadCloudData() {
   }
 }
 
-
 /* ==================== LOCAL DATA IMPORT ==================== */
 
 function getLocalData() {
@@ -1020,7 +1166,6 @@ function getLocalData() {
     localShifts = {};
   }
 
-
   try {
 
     localSettings =
@@ -1032,13 +1177,11 @@ function getLocalData() {
     localSettings = null;
   }
 
-
   return {
     shifts: localShifts,
     settings: localSettings
   };
 }
-
 
 function checkForLocalData() {
 
@@ -1064,7 +1207,6 @@ function checkForLocalData() {
   }
 }
 
-
 window.dismissImport = function() {
 
   sessionStorage.setItem(
@@ -1074,7 +1216,6 @@ window.dismissImport = function() {
 
   $("importBox").style.display = "none";
 };
-
 
 window.importLocalData = async function() {
 
@@ -1094,22 +1235,15 @@ window.importLocalData = async function() {
     return;
   }
 
-
   const confirmed = confirm(
     "Import the shifts and settings stored on this device into your cloud account? Existing cloud shifts with the same date will be replaced."
   );
 
   if (!confirmed) return;
 
-
   setSyncStatus("Importing…");
 
   try {
-
-    /*
-      Firestore batches support up to 500 writes.
-      We use chunks safely below that limit.
-    */
 
     const chunkSize = 400;
 
@@ -1138,7 +1272,6 @@ window.importLocalData = async function() {
       await batch.commit();
     }
 
-
     if (local.settings) {
 
       const importedSettings = {
@@ -1161,7 +1294,6 @@ window.importLocalData = async function() {
       );
     }
 
-
     $("importBox").style.display = "none";
 
     await loadCloudData();
@@ -1183,7 +1315,6 @@ window.importLocalData = async function() {
   }
 };
 
-
 /* ==================== SHIFT HELPERS ==================== */
 
 function normalizeShift(shift) {
@@ -1195,7 +1326,6 @@ function normalizeShift(shift) {
     credit: Number(shift?.credit) || 0
   };
 }
-
 
 /* ==================== CALENDAR ==================== */
 
@@ -1222,7 +1352,6 @@ function renderCalendar() {
   const daysInMonth =
     new Date(year, month + 1, 0).getDate();
 
-
   for (let i = 0; i < firstDay; i++) {
 
     const blank =
@@ -1232,7 +1361,6 @@ function renderCalendar() {
 
     calendar.appendChild(blank);
   }
-
 
   for (
     let day = 1;
@@ -1252,7 +1380,6 @@ function renderCalendar() {
       "day" +
       (shift ? " has-shift" : "");
 
-
     let total = "";
 
     if (shift) {
@@ -1270,7 +1397,6 @@ function renderCalendar() {
         `<div class="day-total">${money(gross)}</div>`;
     }
 
-
     el.innerHTML =
       `<div class="day-number">${day}</div>${total}`;
 
@@ -1282,7 +1408,6 @@ function renderCalendar() {
   updateSummary();
 }
 
-
 window.changeMonth = function(amount) {
 
   currentDate.setMonth(
@@ -1291,7 +1416,6 @@ window.changeMonth = function(amount) {
 
   renderCalendar();
 };
-
 
 /* ==================== SHIFT MODAL ==================== */
 
@@ -1307,7 +1431,6 @@ function openShift(key) {
       credit: ""
     };
 
-
   $("shiftDate").textContent =
     new Date(
       key + "T12:00:00"
@@ -1320,7 +1443,6 @@ function openShift(key) {
       }
     );
 
-
   $("hours").value = shift.hours;
   $("wage").value = shift.wage;
   $("cash").value = shift.cash;
@@ -1331,11 +1453,9 @@ function openShift(key) {
   calculateShift();
 }
 
-
 window.closeModal = function() {
   $("shiftModal").style.display = "none";
 };
-
 
 function calculateShift() {
 
@@ -1351,17 +1471,11 @@ function calculateShift() {
   const credit =
     Number($("credit").value) || 0;
 
-
   const wages =
     hours * wage;
 
   const gross =
     wages + cash + credit;
-
-  /*
-    Simplified budgeting estimate.
-    Tips, including cash tips, may be taxable.
-  */
 
   const estimatedTax =
     gross * (settings.tax / 100);
@@ -1371,7 +1485,6 @@ function calculateShift() {
 
   const hourly =
     hours ? gross / hours : 0;
-
 
   $("calcWages").textContent =
     money(wages);
@@ -1389,7 +1502,6 @@ function calculateShift() {
     money(hourly);
 }
 
-
 ["hours","wage","cash","credit"]
 .forEach(id => {
 
@@ -1399,12 +1511,10 @@ function calculateShift() {
   );
 });
 
-
 window.saveShift = async function() {
 
   if (!currentUser || !selectedDate)
     return;
-
 
   const newShift = {
 
@@ -1421,7 +1531,6 @@ window.saveShift = async function() {
       Number($("credit").value) || 0
   };
 
-
   const button =
     $("saveShiftButton");
 
@@ -1429,7 +1538,6 @@ window.saveShift = async function() {
   button.textContent = "Saving…";
 
   setSyncStatus("Saving…");
-
 
   try {
 
@@ -1470,18 +1578,15 @@ window.saveShift = async function() {
   }
 };
 
-
 window.deleteShift = async function() {
 
   if (!currentUser || !selectedDate)
     return;
 
-
   if (!shifts[selectedDate]) {
     closeModal();
     return;
   }
-
 
   const confirmed =
     confirm(
@@ -1490,9 +1595,7 @@ window.deleteShift = async function() {
 
   if (!confirmed) return;
 
-
   setSyncStatus("Deleting…");
-
 
   try {
 
@@ -1526,13 +1629,11 @@ window.deleteShift = async function() {
   }
 };
 
-
 /* ==================== SETTINGS ==================== */
 
 window.saveSettings = async function() {
 
   if (!currentUser) return;
-
 
   const newSettings = {
 
@@ -1547,9 +1648,7 @@ window.saveSettings = async function() {
       ) || 0
   };
 
-
   setSyncStatus("Saving settings…");
-
 
   try {
 
@@ -1585,7 +1684,6 @@ window.saveSettings = async function() {
   }
 };
 
-
 /* ==================== SUMMARY ==================== */
 
 function updateSummary() {
@@ -1596,13 +1694,11 @@ function updateSummary() {
   const month =
     currentDate.getMonth();
 
-
   let hours = 0;
   let wages = 0;
   let cash = 0;
   let credit = 0;
   let count = 0;
-
 
   Object.entries(shifts)
   .forEach(([key, rawShift]) => {
@@ -1632,7 +1728,6 @@ function updateSummary() {
     }
   });
 
-
   const gross =
     wages + cash + credit;
 
@@ -1644,7 +1739,6 @@ function updateSummary() {
 
   const avg =
     hours ? gross / hours : 0;
-
 
   $("totalHours").textContent =
     hours.toFixed(2);
@@ -1671,7 +1765,6 @@ function updateSummary() {
     count;
 }
 
-
 /* ==================== AUTH STATE ==================== */
 
 onAuthStateChanged(
@@ -1693,6 +1786,16 @@ onAuthStateChanged(
 
       await loadCloudData();
 
+      if (showGuideAfterSignup) {
+
+        showGuideAfterSignup = false;
+
+        setTimeout(
+          showHomeScreenGuide,
+          350
+        );
+      }
+
     } else {
 
       currentUser = null;
@@ -1707,11 +1810,13 @@ onAuthStateChanged(
       $("shiftModal").style.display =
         "none";
 
+      $("homeScreenGuide").style.display =
+        "none";
+
       clearAuthMessage();
     }
   }
 );
-
 
 /* Enter key signs in */
 
