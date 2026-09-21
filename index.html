@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tip Tracker</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 18px;
+}
+
+h1 {
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #94a3b8;
+  margin-top: 0;
+}
+
+.card {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 16px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.month-nav button {
+  background: #334155;
+}
+
+.weekdays,
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.weekdays div {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 8px 0;
+}
+
+.day {
+  min-height: 70px;
+  background: #334155;
+  border-radius: 9px;
+  padding: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.day.empty {
+  background: transparent;
+}
+
+.day.has-shift {
+  background: #1d4ed8;
+}
+
+.day-number {
+  font-weight: bold;
+}
+
+.day-total {
+  margin-top: 9px;
+  font-size: 12px;
+  color: #dbeafe;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  background: #334155;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.stat small {
+  color: #94a3b8;
+  display: block;
+}
+
+.stat strong {
+  font-size: 19px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #1e293b;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 18px;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+label {
+  display: block;
+  color: #cbd5e1;
+  margin: 13px 0 5px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 17px;
+  border-radius: 9px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: white;
+}
+
+.results {
+  margin-top: 16px;
+  border-top: 1px solid #475569;
+  padding-top: 10px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.delete {
+  background: #b91c1c;
+}
+
+.cancel {
+  background: #475569;
+}
+
+.settings input {
+  width: 90px;
+}
+
+.note {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.4;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💵 Tip Tracker</h1>
+<p class="subtitle">Track your shifts, wages & tips.</p>
+
+<div class="card">
+  <div class="month-nav">
+    <button onclick="changeMonth(-1)">‹</button>
+    <h2 id="monthTitle"></h2>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="weekdays">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+
+  <div id="calendar" class="calendar"></div>
+</div>
+
+<div class="card">
+  <h2>Month Summary</h2>
+
+  <div class="summary-grid">
+
+    <div class="stat">
+      <small>Hours Worked</small>
+      <strong id="totalHours">0</strong>
+    </div>
+
+    <div class="stat">
+      <small>Hourly Wages</small>
+      <strong id="totalWages">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Credit Tips</small>
+      <strong id="totalCredit">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Cash Tips</small>
+      <strong id="totalCash">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Gross Earnings</small>
+      <strong id="totalGross">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Est. Take Home*</small>
+      <strong id="totalNet">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Effective $ / Hour</small>
+      <strong id="hourlyAverage">$0.00</strong>
+    </div>
+
+    <div class="stat">
+      <small>Shifts Worked</small>
+      <strong id="shiftCount">0</strong>
+    </div>
+
+  </div>
+</div>
+
+<div class="card settings">
+  <h2>Settings</h2>
+
+  <label>
+    Default hourly wage
+    <input id="defaultWage" type="number" step="0.01">
+  </label>
+
+  <label>
+    Estimated tax rate (%)
+    <input id="taxRate" type="number" step="0.1">
+  </label>
+
+  <button onclick="saveSettings()">Save Settings</button>
+
+  <p class="note">
+    *Tax figures are estimates for budgeting. Cash tips are tracked
+    separately but may still be taxable income.
+  </p>
+</div>
+
+</div>
+
+
+<div id="shiftModal" class="modal">
+
+<div class="modal-content">
+
+<h2 id="shiftDate"></h2>
+
+<label>Hours Worked</label>
+<input id="hours" type="number" step="0.01" inputmode="decimal">
+
+<label>Hourly Wage</label>
+<input id="wage" type="number" step="0.01" inputmode="decimal">
+
+<label>Cash Tips</label>
+<input id="cash" type="number" step="0.01" inputmode="decimal">
+
+<label>Credit Card Tips</label>
+<input id="credit" type="number" step="0.01" inputmode="decimal">
+
+<div class="results">
+
+<div class="result-row">
+<span>Hourly Pay</span>
+<strong id="calcWages">$0.00</strong>
+</div>
+
+<div class="result-row">
+<span>Gross Earnings</span>
+<strong id="calcGross">$0.00</strong>
+</div>
+
+<div class="result-row">
+<span>Est. Tax*</span>
+<strong id="calcTax">$0.00</strong>
+</div>
+
+<div class="result-row">
+<span>Est. Take Home*</span>
+<strong id="calcNet">$0.00</strong>
+</div>
+
+<div class="result-row">
+<span>Effective $ / Hour</span>
+<strong id="calcHourly">$0.00</strong>
+</div>
+
+</div>
+
+<div class="actions">
+<button class="cancel" onclick="closeModal()">Cancel</button>
+<button class="delete" onclick="deleteShift()">Delete</button>
+<button onclick="saveShift()">Save</button>
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+let shifts = JSON.parse(localStorage.getItem("tipTrackerShifts")) || {};
+
+let settings = JSON.parse(localStorage.getItem("tipTrackerSettings")) || {
+  wage: 8,
+  tax: 18
+};
+
+let currentDate = new Date();
+let selectedDate = null;
+
+const money = n =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD"
+  }).format(n || 0);
+
+
+document.getElementById("defaultWage").value = settings.wage;
+document.getElementById("taxRate").value = settings.tax;
+
+
+function dateKey(year, month, day) {
+  return `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+
+
+function renderCalendar() {
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  document.getElementById("monthTitle").textContent =
+    currentDate.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric"
+    });
+
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const blank = document.createElement("div");
+    blank.className = "day empty";
+    calendar.appendChild(blank);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+
+    const key = dateKey(year, month, day);
+    const shift = shifts[key];
+
+    const el = document.createElement("div");
+    el.className = "day" + (shift ? " has-shift" : "");
+
+    let total = "";
+
+    if (shift) {
+      const gross =
+        Number(shift.hours) * Number(shift.wage) +
+        Number(shift.cash) +
+        Number(shift.credit);
+
+      total = `<div class="day-total">${money(gross)}</div>`;
+    }
+
+    el.innerHTML =
+      `<div class="day-number">${day}</div>${total}`;
+
+    el.onclick = () => openShift(key);
+
+    calendar.appendChild(el);
+  }
+
+  updateSummary();
+}
+
+
+function changeMonth(amount) {
+  currentDate.setMonth(currentDate.getMonth() + amount);
+  renderCalendar();
+}
+
+
+function openShift(key) {
+
+  selectedDate = key;
+
+  const shift = shifts[key] || {
+    hours: "",
+    wage: settings.wage,
+    cash: "",
+    credit: ""
+  };
+
+  document.getElementById("shiftDate").textContent =
+    new Date(key + "T12:00:00").toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric"
+    });
+
+  document.getElementById("hours").value = shift.hours;
+  document.getElementById("wage").value = shift.wage;
+  document.getElementById("cash").value = shift.cash;
+  document.getElementById("credit").value = shift.credit;
+
+  document.getElementById("shiftModal").style.display = "flex";
+
+  calculateShift();
+}
+
+
+function closeModal() {
+  document.getElementById("shiftModal").style.display = "none";
+}
+
+
+function calculateShift() {
+
+  const hours = Number(document.getElementById("hours").value) || 0;
+  const wage = Number(document.getElementById("wage").value) || 0;
+  const cash = Number(document.getElementById("cash").value) || 0;
+  const credit = Number(document.getElementById("credit").value) || 0;
+
+  const wages = hours * wage;
+  const gross = wages + cash + credit;
+
+  // Budgeting estimate: tax applies to wages + all tips.
+  const estimatedTax = gross * (settings.tax / 100);
+
+  const net = gross - estimatedTax;
+
+  const hourly = hours ? gross / hours : 0;
+
+  document.getElementById("calcWages").textContent = money(wages);
+  document.getElementById("calcGross").textContent = money(gross);
+  document.getElementById("calcTax").textContent = money(estimatedTax);
+  document.getElementById("calcNet").textContent = money(net);
+  document.getElementById("calcHourly").textContent = money(hourly);
+}
+
+
+["hours","wage","cash","credit"].forEach(id => {
+  document.getElementById(id).addEventListener("input", calculateShift);
+});
+
+
+function saveShift() {
+
+  shifts[selectedDate] = {
+    hours: Number(document.getElementById("hours").value) || 0,
+    wage: Number(document.getElementById("wage").value) || 0,
+    cash: Number(document.getElementById("cash").value) || 0,
+    credit: Number(document.getElementById("credit").value) || 0
+  };
+
+  localStorage.setItem("tipTrackerShifts", JSON.stringify(shifts));
+
+  closeModal();
+  renderCalendar();
+}
+
+
+function deleteShift() {
+
+  if (!selectedDate) return;
+
+  delete shifts[selectedDate];
+
+  localStorage.setItem("tipTrackerShifts", JSON.stringify(shifts));
+
+  closeModal();
+  renderCalendar();
+}
+
+
+function saveSettings() {
+
+  settings.wage =
+    Number(document.getElementById("defaultWage").value) || 0;
+
+  settings.tax =
+    Number(document.getElementById("taxRate").value) || 0;
+
+  localStorage.setItem("tipTrackerSettings", JSON.stringify(settings));
+
+  alert("Settings saved.");
+  updateSummary();
+}
+
+
+function updateSummary() {
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  let hours = 0;
+  let wages = 0;
+  let cash = 0;
+  let credit = 0;
+  let count = 0;
+
+  Object.entries(shifts).forEach(([key, shift]) => {
+
+    const d = new Date(key + "T12:00:00");
+
+    if (d.getFullYear() === year && d.getMonth() === month) {
+
+      const h = Number(shift.hours) || 0;
+      const w = Number(shift.wage) || 0;
+
+      hours += h;
+      wages += h * w;
+      cash += Number(shift.cash) || 0;
+      credit += Number(shift.credit) || 0;
+
+      count++;
+    }
+  });
+
+  const gross = wages + cash + credit;
+  const tax = gross * (settings.tax / 100);
+  const net = gross - tax;
+  const avg = hours ? gross / hours : 0;
+
+  document.getElementById("totalHours").textContent =
+    hours.toFixed(2);
+
+  document.getElementById("totalWages").textContent =
+    money(wages);
+
+  document.getElementById("totalCredit").textContent =
+    money(credit);
+
+  document.getElementById("totalCash").textContent =
+    money(cash);
+
+  document.getElementById("totalGross").textContent =
+    money(gross);
+
+  document.getElementById("totalNet").textContent =
+    money(net);
+
+  document.getElementById("hourlyAverage").textContent =
+    money(avg);
+
+  document.getElementById("shiftCount").textContent =
+    count;
+}
+
+
+renderCalendar();
+
+</script>
+
+</body>
+</html>
