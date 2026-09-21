@@ -22,6 +22,7 @@ button {
   border: 0;
   border-radius: 10px;
   padding: 11px 14px;
+  font-weight: 600;
   background: #2563eb;
   color: white;
   cursor: pointer;
@@ -277,7 +278,49 @@ label {
 
 .import-secondary { background: #475569; }
 
-/* ---------- MODALS ---------- */
+/* ---------- SUPPORT ---------- */
+
+.support-card {
+  text-align: center;
+  border: 1px solid #334155;
+}
+
+.support-icon {
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+
+.support-card h2 {
+  margin: 4px 0 8px;
+}
+
+.support-text {
+  color: #cbd5e1;
+  line-height: 1.55;
+  font-size: 14px;
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+
+.support-button {
+  display: inline-block;
+  width: 100%;
+  max-width: 320px;
+  text-decoration: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 11px;
+  padding: 13px 18px;
+  font-weight: 700;
+}
+
+.support-note {
+  color: #64748b;
+  font-size: 11px;
+  margin: 11px 0 0;
+}
+
+/* ---------- MODAL ---------- */
 
 .modal {
   display: none;
@@ -324,55 +367,54 @@ label {
 .delete { background: #b91c1c; }
 .cancel { background: #475569; }
 
-.loading {
-  text-align: center;
-  padding: 50px 20px;
-  color: #cbd5e1;
-}
-
 /* ---------- HOME SCREEN GUIDE ---------- */
 
-.home-guide {
+.home-guide-content {
   text-align: center;
 }
 
 .home-guide-icon {
-  font-size: 48px;
+  font-size: 42px;
   margin-bottom: 8px;
 }
 
-.home-guide h2 {
-  margin: 4px 0 8px;
+.home-guide-content h2 {
+  margin-top: 0;
 }
 
 .home-guide-intro {
   color: #94a3b8;
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-.home-guide-instructions {
-  text-align: left;
+.home-guide-box {
   background: #334155;
   border-radius: 14px;
-  padding: 14px 16px;
-  margin: 16px 0 20px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 16px;
 }
 
-.home-guide-instructions h3 {
+.home-guide-box h3 {
   margin-top: 0;
   margin-bottom: 12px;
 }
 
-.home-guide-instructions p {
+.home-guide-box p {
   color: #e2e8f0;
-  line-height: 1.45;
+  line-height: 1.5;
   margin: 10px 0;
 }
 
 .home-guide-button {
   width: 100%;
-  font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px 20px;
+  color: #cbd5e1;
 }
 
 @media (max-width: 430px) {
@@ -595,88 +637,35 @@ label {
 
   </div>
 
-</div>
-</div>
+  <!-- SUPPORT TIPTRACKR -->
 
-<!-- ==================== HOME SCREEN GUIDE ==================== -->
+  <div class="card support-card">
 
-<div id="homeScreenGuide" class="modal">
+    <div class="support-icon">❤️</div>
 
-  <div class="modal-content home-guide">
+    <h2>Support TipTrackr</h2>
 
-    <div class="home-guide-icon">📲</div>
-
-    <h2>Add Tip Tracker to your Home Screen</h2>
-
-    <p class="home-guide-intro">
-      Get one-tap access to Tip Tracker and use it more like an app.
+    <p class="support-text">
+      TipTrackr is free to use. If it's helping you keep track of your
+      earnings, you can leave an optional tip to support development,
+      maintenance, and future improvements.
     </p>
 
-    <div id="iosInstructions"
-         class="home-guide-instructions"
-         style="display:none;">
+    <a
+      class="support-button"
+      href="https://donate.stripe.com/6oUfZj7Z44gH36FfWbds400"
+      target="_blank"
+      rel="noopener noreferrer">
+      ☕ Leave an Optional Tip
+    </a>
 
-      <h3>iPhone / iPad</h3>
-
-      <p>1. Open Tip Tracker in <strong>Safari</strong>.</p>
-
-      <p>
-        2. Tap the <strong>Share</strong> button
-        (the square with the ↑ arrow).
-      </p>
-
-      <p>
-        3. Scroll down and tap
-        <strong>Add to Home Screen</strong>.
-      </p>
-
-      <p>4. Tap <strong>Add</strong>.</p>
-
-    </div>
-
-    <div id="androidInstructions"
-         class="home-guide-instructions"
-         style="display:none;">
-
-      <h3>Android</h3>
-
-      <p>1. Open Tip Tracker in <strong>Chrome</strong>.</p>
-
-      <p>2. Tap the <strong>⋮</strong> menu.</p>
-
-      <p>
-        3. Tap <strong>Add to Home screen</strong>
-        or <strong>Install app</strong>.
-      </p>
-
-      <p>
-        4. Tap <strong>Add</strong> or
-        <strong>Install</strong>.
-      </p>
-
-    </div>
-
-    <div id="otherInstructions"
-         class="home-guide-instructions"
-         style="display:none;">
-
-      <h3>Add Tip Tracker to your device</h3>
-
-      <p>
-        Open your browser menu and look for
-        <strong>Add to Home Screen</strong> or
-        <strong>Install App</strong>.
-      </p>
-
-    </div>
-
-    <button
-      class="home-guide-button"
-      onclick="dismissHomeScreenGuide()">
-      Got it
-    </button>
+    <p class="support-note">
+      Secure payment powered by Stripe. Supporting TipTrackr is completely optional.
+    </p>
 
   </div>
+
+</div>
 </div>
 
 <!-- ==================== SHIFT MODAL ==================== -->
@@ -749,6 +738,82 @@ label {
 </div>
 </div>
 
+<!-- ==================== HOME SCREEN GUIDE ==================== -->
+
+<div id="homeScreenModal" class="modal">
+
+  <div class="modal-content home-guide-content">
+
+    <div class="home-guide-icon">📲</div>
+
+    <h2>Add Tip Tracker to your Home Screen</h2>
+
+    <p class="home-guide-intro">
+      Get one-tap access to Tip Tracker and use it more like an app.
+    </p>
+
+    <div id="iosGuide" class="home-guide-box" style="display:none;">
+      <h3>iPhone / iPad</h3>
+
+      <p>1. Open Tip Tracker in <strong>Safari</strong>.</p>
+
+      <p>
+        2. Tap the <strong>Share</strong> button
+        (the square with the ↑ arrow).
+      </p>
+
+      <p>
+        3. Scroll down and tap
+        <strong>Add to Home Screen</strong>.
+      </p>
+
+      <p>4. Tap <strong>Add</strong>.</p>
+    </div>
+
+    <div id="androidGuide" class="home-guide-box" style="display:none;">
+      <h3>Android</h3>
+
+      <p>
+        1. Open Tip Tracker in
+        <strong>Chrome</strong>.
+      </p>
+
+      <p>
+        2. Tap the <strong>⋮ menu</strong>
+        in the top-right corner.
+      </p>
+
+      <p>
+        3. Tap <strong>Add to Home screen</strong>
+        or <strong>Install app</strong>.
+      </p>
+
+      <p>
+        4. Tap <strong>Add</strong> or
+        <strong>Install</strong>.
+      </p>
+    </div>
+
+    <div id="genericGuide" class="home-guide-box" style="display:none;">
+      <h3>Add to Home Screen</h3>
+
+      <p>
+        Open your browser's menu and look for
+        <strong>Add to Home Screen</strong> or
+        <strong>Install App</strong>.
+      </p>
+    </div>
+
+    <button
+      class="home-guide-button"
+      onclick="closeHomeScreenGuide()">
+      Got it
+    </button>
+
+  </div>
+
+</div>
+
 <!-- ==================== FIREBASE ==================== -->
 
 <script type="module">
@@ -804,7 +869,7 @@ let settings = {
 let currentDate = new Date();
 let selectedDate = null;
 let currentUser = null;
-let showGuideAfterSignup = false;
+let accountJustCreated = false;
 
 /* ==================== HELPERS ==================== */
 
@@ -883,52 +948,6 @@ function friendlyError(error) {
          "Something went wrong. Please try again.";
 }
 
-/* ==================== HOME SCREEN GUIDE ==================== */
-
-function isRunningAsInstalledApp() {
-
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true
-  );
-}
-
-function showHomeScreenGuide() {
-
-  if (isRunningAsInstalledApp()) {
-    return;
-  }
-
-  const userAgent =
-    navigator.userAgent || navigator.vendor || "";
-
-  const isIOS =
-    /iPad|iPhone|iPod/.test(userAgent) ||
-    (
-      navigator.platform === "MacIntel" &&
-      navigator.maxTouchPoints > 1
-    );
-
-  const isAndroid =
-    /Android/i.test(userAgent);
-
-  $("iosInstructions").style.display =
-    isIOS ? "block" : "none";
-
-  $("androidInstructions").style.display =
-    isAndroid ? "block" : "none";
-
-  $("otherInstructions").style.display =
-    (!isIOS && !isAndroid) ? "block" : "none";
-
-  $("homeScreenGuide").style.display = "flex";
-}
-
-window.dismissHomeScreenGuide = function() {
-
-  $("homeScreenGuide").style.display = "none";
-};
-
 /* ==================== AUTH UI ==================== */
 
 window.showCreateAccount = function() {
@@ -972,7 +991,7 @@ window.createAccount = async function() {
 
   try {
 
-    showGuideAfterSignup = true;
+    accountJustCreated = true;
 
     await createUserWithEmailAndPassword(
       auth,
@@ -982,8 +1001,7 @@ window.createAccount = async function() {
 
   } catch (error) {
 
-    showGuideAfterSignup = false;
-
+    accountJustCreated = false;
     showAuthMessage(friendlyError(error));
 
   } finally {
@@ -1068,11 +1086,44 @@ window.resetPassword = async function() {
   }
 };
 
-/* ==================== FIRESTORE PATHS ==================== */
+/* ==================== HOME SCREEN GUIDE ==================== */
 
-function userDocRef() {
-  return doc(db, "users", currentUser.uid);
+function showHomeScreenGuide() {
+
+  const ua = navigator.userAgent || "";
+
+  const isIOS =
+    /iPad|iPhone|iPod/.test(ua) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  const isAndroid =
+    /Android/i.test(ua);
+
+  $("iosGuide").style.display =
+    isIOS ? "block" : "none";
+
+  $("androidGuide").style.display =
+    isAndroid ? "block" : "none";
+
+  $("genericGuide").style.display =
+    (!isIOS && !isAndroid)
+      ? "block"
+      : "none";
+
+  $("homeScreenModal").style.display =
+    "flex";
 }
+
+window.closeHomeScreenGuide = function() {
+
+  $("homeScreenModal").style.display =
+    "none";
+};
+
+/* ==================== FIRESTORE PATHS ==================== */
 
 function settingsDocRef() {
   return doc(db, "users", currentUser.uid, "settings", "profile");
@@ -1786,9 +1837,9 @@ onAuthStateChanged(
 
       await loadCloudData();
 
-      if (showGuideAfterSignup) {
+      if (accountJustCreated) {
 
-        showGuideAfterSignup = false;
+        accountJustCreated = false;
 
         setTimeout(
           showHomeScreenGuide,
@@ -1810,7 +1861,7 @@ onAuthStateChanged(
       $("shiftModal").style.display =
         "none";
 
-      $("homeScreenGuide").style.display =
+      $("homeScreenModal").style.display =
         "none";
 
       clearAuthMessage();
