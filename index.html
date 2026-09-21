@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
 <title>Tip Tracker</title>
 
 <style>
@@ -15,15 +16,40 @@ body {
   color: white;
 }
 
+button, input { font: inherit; }
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 16px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 17px;
+  border-radius: 9px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: white;
+}
+
 .container {
   max-width: 700px;
   margin: auto;
   padding: 18px;
 }
 
-h1 {
-  margin-bottom: 4px;
-}
+h1 { margin-bottom: 4px; }
 
 .subtitle {
   color: #94a3b8;
@@ -37,25 +63,125 @@ h1 {
   margin-bottom: 16px;
 }
 
+/* ---------- AUTH ---------- */
+
+#authScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.auth-card h1 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.auth-card .subtitle {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-card label {
+  display: block;
+  color: #cbd5e1;
+  margin: 14px 0 6px;
+}
+
+.auth-button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.auth-links {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.link-button {
+  background: none;
+  color: #60a5fa;
+  padding: 7px;
+  font-size: 14px;
+}
+
+.auth-message {
+  display: none;
+  padding: 11px;
+  border-radius: 9px;
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.auth-message.error {
+  display: block;
+  background: #451a1a;
+  color: #fecaca;
+}
+
+.auth-message.success {
+  display: block;
+  background: #052e16;
+  color: #bbf7d0;
+}
+
+/* ---------- APP HEADER ---------- */
+
+#appScreen { display: none; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.account-area {
+  text-align: right;
+  max-width: 50%;
+}
+
+.account-email {
+  color: #94a3b8;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  margin-bottom: 6px;
+}
+
+.signout {
+  background: #334155;
+  font-size: 13px;
+  padding: 8px 11px;
+}
+
+.sync-status {
+  color: #94a3b8;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.sync-status.good { color: #86efac; }
+.sync-status.bad { color: #fca5a5; }
+
+/* ---------- CALENDAR ---------- */
+
 .month-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 16px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
-}
-
-.month-nav button {
-  background: #334155;
-}
+.month-nav button { background: #334155; }
 
 .weekdays,
 .calendar {
@@ -78,25 +204,26 @@ button {
   padding: 6px;
   font-size: 13px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .day.empty {
   background: transparent;
+  cursor: default;
 }
 
-.day.has-shift {
-  background: #1d4ed8;
-}
+.day.has-shift { background: #1d4ed8; }
 
-.day-number {
-  font-weight: bold;
-}
+.day-number { font-weight: bold; }
 
 .day-total {
   margin-top: 9px;
-  font-size: 12px;
+  font-size: 11px;
   color: #dbeafe;
+  overflow-wrap: anywhere;
 }
+
+/* ---------- SUMMARY ---------- */
 
 .summary-grid {
   display: grid;
@@ -113,20 +240,55 @@ button {
 .stat small {
   color: #94a3b8;
   display: block;
+  margin-bottom: 3px;
 }
 
-.stat strong {
-  font-size: 19px;
+.stat strong { font-size: 19px; }
+
+/* ---------- SETTINGS ---------- */
+
+label {
+  display: block;
+  color: #cbd5e1;
+  margin: 13px 0 5px;
 }
+
+.settings input { width: 120px; }
+
+.note {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.import-box {
+  background: #334155;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.import-box h3 { margin-top: 0; }
+
+.import-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.import-secondary { background: #475569; }
+
+/* ---------- MODAL ---------- */
 
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.7);
+  background: rgba(0,0,0,.72);
   align-items: center;
   justify-content: center;
   padding: 20px;
+  z-index: 20;
 }
 
 .modal-content {
@@ -139,22 +301,6 @@ button {
   overflow-y: auto;
 }
 
-label {
-  display: block;
-  color: #cbd5e1;
-  margin: 13px 0 5px;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  font-size: 17px;
-  border-radius: 9px;
-  border: 1px solid #475569;
-  background: #0f172a;
-  color: white;
-}
-
 .results {
   margin-top: 16px;
   border-top: 1px solid #475569;
@@ -164,6 +310,7 @@ input {
 .result-row {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   padding: 5px 0;
 }
 
@@ -173,207 +320,386 @@ input {
   margin-top: 18px;
 }
 
-.actions button {
-  flex: 1;
+.actions button { flex: 1; }
+
+.delete { background: #b91c1c; }
+.cancel { background: #475569; }
+
+.loading {
+  text-align: center;
+  padding: 50px 20px;
+  color: #cbd5e1;
 }
 
-.delete {
-  background: #b91c1c;
-}
-
-.cancel {
-  background: #475569;
-}
-
-.settings input {
-  width: 90px;
-}
-
-.note {
-  color: #94a3b8;
-  font-size: 12px;
-  line-height: 1.4;
+@media (max-width: 430px) {
+  .container { padding: 13px; }
+  .day { min-height: 62px; padding: 5px; }
+  .day-total { font-size: 10px; }
+  .topbar h1 { font-size: 25px; }
+  .summary-grid { gap: 8px; }
+  .stat { padding: 10px; }
 }
 </style>
 </head>
 
 <body>
 
+<!-- ==================== AUTH ==================== -->
+
+<div id="authScreen">
+  <div class="auth-card">
+
+    <h1>💵 Tip Tracker</h1>
+    <p class="subtitle">Your shifts. Your tips. Synced everywhere.</p>
+
+    <div id="loginForm">
+      <h2>Sign In</h2>
+
+      <label>Email</label>
+      <input id="loginEmail"
+             type="email"
+             autocomplete="email"
+             autocapitalize="none">
+
+      <label>Password</label>
+      <input id="loginPassword"
+             type="password"
+             autocomplete="current-password">
+
+      <button id="loginButton"
+              class="auth-button"
+              onclick="loginUser()">
+        Sign In
+      </button>
+
+      <div class="auth-links">
+        <button class="link-button" onclick="showCreateAccount()">
+          Create Account
+        </button>
+
+        <button class="link-button" onclick="resetPassword()">
+          Forgot Password?
+        </button>
+      </div>
+    </div>
+
+    <div id="createForm" style="display:none;">
+      <h2>Create Account</h2>
+
+      <label>Email</label>
+      <input id="createEmail"
+             type="email"
+             autocomplete="email"
+             autocapitalize="none">
+
+      <label>Password</label>
+      <input id="createPassword"
+             type="password"
+             autocomplete="new-password">
+
+      <label>Confirm Password</label>
+      <input id="confirmPassword"
+             type="password"
+             autocomplete="new-password">
+
+      <button id="createButton"
+              class="auth-button"
+              onclick="createAccount()">
+        Create Account
+      </button>
+
+      <div class="auth-links">
+        <button class="link-button" onclick="showLogin()">
+          Already have an account? Sign In
+        </button>
+      </div>
+    </div>
+
+    <div id="authMessage" class="auth-message"></div>
+
+  </div>
+</div>
+
+
+<!-- ==================== APP ==================== -->
+
+<div id="appScreen">
+
 <div class="container">
 
-<h1>💵 Tip Tracker</h1>
-<p class="subtitle">Track your shifts, wages & tips.</p>
+  <div class="topbar">
+    <div>
+      <h1>💵 Tip Tracker</h1>
+      <p class="subtitle">Track your shifts, wages & tips.</p>
+    </div>
 
-<div class="card">
-  <div class="month-nav">
-    <button onclick="changeMonth(-1)">‹</button>
-    <h2 id="monthTitle"></h2>
-    <button onclick="changeMonth(1)">›</button>
+    <div class="account-area">
+      <div id="accountEmail" class="account-email"></div>
+      <button class="signout" onclick="logoutUser()">Sign Out</button>
+      <div id="syncStatus" class="sync-status">Connecting…</div>
+    </div>
   </div>
 
-  <div class="weekdays">
-    <div>Sun</div>
-    <div>Mon</div>
-    <div>Tue</div>
-    <div>Wed</div>
-    <div>Thu</div>
-    <div>Fri</div>
-    <div>Sat</div>
+  <div id="importBox" class="import-box" style="display:none;">
+    <h3>Existing data found</h3>
+    <p class="note">
+      Tip Tracker found shifts or settings previously saved on this device.
+      You can copy them into your cloud account.
+    </p>
+
+    <div class="import-actions">
+      <button onclick="importLocalData()">Import to Cloud</button>
+      <button class="import-secondary" onclick="dismissImport()">
+        Not Now
+      </button>
+    </div>
   </div>
 
-  <div id="calendar" class="calendar"></div>
-</div>
-
-<div class="card">
-  <h2>Month Summary</h2>
-
-  <div class="summary-grid">
-
-    <div class="stat">
-      <small>Hours Worked</small>
-      <strong id="totalHours">0</strong>
+  <div class="card">
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">‹</button>
+      <h2 id="monthTitle"></h2>
+      <button onclick="changeMonth(1)">›</button>
     </div>
 
-    <div class="stat">
-      <small>Hourly Wages</small>
-      <strong id="totalWages">$0.00</strong>
+    <div class="weekdays">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
     </div>
 
-    <div class="stat">
-      <small>Credit Tips</small>
-      <strong id="totalCredit">$0.00</strong>
-    </div>
+    <div id="calendar" class="calendar"></div>
+  </div>
 
-    <div class="stat">
-      <small>Cash Tips</small>
-      <strong id="totalCash">$0.00</strong>
-    </div>
 
-    <div class="stat">
-      <small>Gross Earnings</small>
-      <strong id="totalGross">$0.00</strong>
-    </div>
+  <div class="card">
+    <h2>Month Summary</h2>
 
-    <div class="stat">
-      <small>Est. Take Home*</small>
-      <strong id="totalNet">$0.00</strong>
-    </div>
+    <div class="summary-grid">
 
-    <div class="stat">
-      <small>Effective $ / Hour</small>
-      <strong id="hourlyAverage">$0.00</strong>
-    </div>
+      <div class="stat">
+        <small>Hours Worked</small>
+        <strong id="totalHours">0</strong>
+      </div>
 
-    <div class="stat">
-      <small>Shifts Worked</small>
-      <strong id="shiftCount">0</strong>
+      <div class="stat">
+        <small>Hourly Wages</small>
+        <strong id="totalWages">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Credit Tips</small>
+        <strong id="totalCredit">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Cash Tips</small>
+        <strong id="totalCash">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Gross Earnings</small>
+        <strong id="totalGross">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Est. Take Home*</small>
+        <strong id="totalNet">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Effective $ / Hour</small>
+        <strong id="hourlyAverage">$0.00</strong>
+      </div>
+
+      <div class="stat">
+        <small>Shifts Worked</small>
+        <strong id="shiftCount">0</strong>
+      </div>
+
     </div>
+  </div>
+
+
+  <div class="card settings">
+
+    <h2>Settings</h2>
+
+    <label>
+      Default hourly wage
+      <input id="defaultWage"
+             type="number"
+             step="0.01"
+             inputmode="decimal">
+    </label>
+
+    <label>
+      Estimated tax rate (%)
+      <input id="taxRate"
+             type="number"
+             step="0.1"
+             inputmode="decimal">
+    </label>
+
+    <button onclick="saveSettings()">Save Settings</button>
+
+    <p class="note">
+      *Tax figures are simplified budgeting estimates. Cash tips are
+      tracked separately but may still be taxable income.
+    </p>
 
   </div>
-</div>
-
-<div class="card settings">
-  <h2>Settings</h2>
-
-  <label>
-    Default hourly wage
-    <input id="defaultWage" type="number" step="0.01">
-  </label>
-
-  <label>
-    Estimated tax rate (%)
-    <input id="taxRate" type="number" step="0.1">
-  </label>
-
-  <button onclick="saveSettings()">Save Settings</button>
-
-  <p class="note">
-    *Tax figures are estimates for budgeting. Cash tips are tracked
-    separately but may still be taxable income.
-  </p>
-</div>
 
 </div>
+</div>
 
+
+<!-- ==================== SHIFT MODAL ==================== -->
 
 <div id="shiftModal" class="modal">
 
 <div class="modal-content">
 
-<h2 id="shiftDate"></h2>
+  <h2 id="shiftDate"></h2>
 
-<label>Hours Worked</label>
-<input id="hours" type="number" step="0.01" inputmode="decimal">
+  <label>Hours Worked</label>
+  <input id="hours"
+         type="number"
+         step="0.01"
+         inputmode="decimal">
 
-<label>Hourly Wage</label>
-<input id="wage" type="number" step="0.01" inputmode="decimal">
+  <label>Hourly Wage</label>
+  <input id="wage"
+         type="number"
+         step="0.01"
+         inputmode="decimal">
 
-<label>Cash Tips</label>
-<input id="cash" type="number" step="0.01" inputmode="decimal">
+  <label>Cash Tips</label>
+  <input id="cash"
+         type="number"
+         step="0.01"
+         inputmode="decimal">
 
-<label>Credit Card Tips</label>
-<input id="credit" type="number" step="0.01" inputmode="decimal">
+  <label>Credit Card Tips</label>
+  <input id="credit"
+         type="number"
+         step="0.01"
+         inputmode="decimal">
 
-<div class="results">
 
-<div class="result-row">
-<span>Hourly Pay</span>
-<strong id="calcWages">$0.00</strong>
+  <div class="results">
+
+    <div class="result-row">
+      <span>Hourly Pay</span>
+      <strong id="calcWages">$0.00</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Gross Earnings</span>
+      <strong id="calcGross">$0.00</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Est. Tax*</span>
+      <strong id="calcTax">$0.00</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Est. Take Home*</span>
+      <strong id="calcNet">$0.00</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Effective $ / Hour</span>
+      <strong id="calcHourly">$0.00</strong>
+    </div>
+
+  </div>
+
+
+  <div class="actions">
+    <button class="cancel" onclick="closeModal()">Cancel</button>
+    <button class="delete" onclick="deleteShift()">Delete</button>
+    <button id="saveShiftButton" onclick="saveShift()">Save</button>
+  </div>
+
+</div>
 </div>
 
-<div class="result-row">
-<span>Gross Earnings</span>
-<strong id="calcGross">$0.00</strong>
-</div>
 
-<div class="result-row">
-<span>Est. Tax*</span>
-<strong id="calcTax">$0.00</strong>
-</div>
+<!-- ==================== FIREBASE ==================== -->
 
-<div class="result-row">
-<span>Est. Take Home*</span>
-<strong id="calcNet">$0.00</strong>
-</div>
+<script type="module">
 
-<div class="result-row">
-<span>Effective $ / Hour</span>
-<strong id="calcHourly">$0.00</strong>
-</div>
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-</div>
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-<div class="actions">
-<button class="cancel" onclick="closeModal()">Cancel</button>
-<button class="delete" onclick="deleteShift()">Delete</button>
-<button onclick="saveShift()">Save</button>
-</div>
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  writeBatch
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-</div>
-</div>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC3GLX8T71A0RdOCkxyK4G0RoaAPbAcPlE",
+  authDomain: "tip-tracker-6242f.firebaseapp.com",
+  projectId: "tip-tracker-6242f",
+  storageBucket: "tip-tracker-6242f.firebasestorage.app",
+  messagingSenderId: "192624376485",
+  appId: "1:192624376485:web:60599fefa1ee27b8feab4c",
+  measurementId: "G-Z76FFXSJT7"
+};
 
 
-<script>
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
 
-let shifts = JSON.parse(localStorage.getItem("tipTrackerShifts")) || {};
 
-let settings = JSON.parse(localStorage.getItem("tipTrackerSettings")) || {
+/* ==================== STATE ==================== */
+
+let shifts = {};
+
+let settings = {
   wage: 8,
   tax: 18
 };
 
 let currentDate = new Date();
 let selectedDate = null;
+let currentUser = null;
+
+
+/* ==================== HELPERS ==================== */
+
+const $ = id => document.getElementById(id);
 
 const money = n =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD"
-  }).format(n || 0);
-
-
-document.getElementById("defaultWage").value = settings.wage;
-document.getElementById("taxRate").value = settings.tax;
+  }).format(Number(n) || 0);
 
 
 function dateKey(year, month, day) {
@@ -381,47 +707,569 @@ function dateKey(year, month, day) {
 }
 
 
+function setSyncStatus(message, type = "") {
+  const el = $("syncStatus");
+
+  if (!el) return;
+
+  el.textContent = message;
+  el.className = "sync-status";
+
+  if (type) el.classList.add(type);
+}
+
+
+function showAuthMessage(message, type = "error") {
+  const el = $("authMessage");
+
+  el.textContent = message;
+  el.className = `auth-message ${type}`;
+}
+
+
+function clearAuthMessage() {
+  const el = $("authMessage");
+
+  el.textContent = "";
+  el.className = "auth-message";
+}
+
+
+function friendlyError(error) {
+
+  const code = error?.code || "";
+
+  const messages = {
+    "auth/invalid-email":
+      "Enter a valid email address.",
+
+    "auth/missing-password":
+      "Enter your password.",
+
+    "auth/weak-password":
+      "Your password needs to be stronger.",
+
+    "auth/email-already-in-use":
+      "An account already exists with that email.",
+
+    "auth/invalid-credential":
+      "The email or password is incorrect.",
+
+    "auth/user-not-found":
+      "No account was found with that email.",
+
+    "auth/wrong-password":
+      "The email or password is incorrect.",
+
+    "auth/too-many-requests":
+      "Too many attempts. Please wait a little while and try again.",
+
+    "auth/network-request-failed":
+      "Network error. Check your internet connection and try again."
+  };
+
+  return messages[code] ||
+         error?.message ||
+         "Something went wrong. Please try again.";
+}
+
+
+/* ==================== AUTH UI ==================== */
+
+window.showCreateAccount = function() {
+  clearAuthMessage();
+  $("loginForm").style.display = "none";
+  $("createForm").style.display = "block";
+};
+
+
+window.showLogin = function() {
+  clearAuthMessage();
+  $("createForm").style.display = "none";
+  $("loginForm").style.display = "block";
+};
+
+
+window.createAccount = async function() {
+
+  clearAuthMessage();
+
+  const email = $("createEmail").value.trim();
+  const password = $("createPassword").value;
+  const confirm = $("confirmPassword").value;
+
+  if (!email) {
+    showAuthMessage("Enter your email address.");
+    return;
+  }
+
+  if (password.length < 6) {
+    showAuthMessage("Password must be at least 6 characters.");
+    return;
+  }
+
+  if (password !== confirm) {
+    showAuthMessage("The passwords don't match.");
+    return;
+  }
+
+  const button = $("createButton");
+  button.disabled = true;
+  button.textContent = "Creating Account…";
+
+  try {
+
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+  } catch (error) {
+
+    showAuthMessage(friendlyError(error));
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Create Account";
+  }
+};
+
+
+window.loginUser = async function() {
+
+  clearAuthMessage();
+
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  if (!email || !password) {
+    showAuthMessage("Enter your email and password.");
+    return;
+  }
+
+  const button = $("loginButton");
+  button.disabled = true;
+  button.textContent = "Signing In…";
+
+  try {
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+  } catch (error) {
+
+    showAuthMessage(friendlyError(error));
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Sign In";
+  }
+};
+
+
+window.logoutUser = async function() {
+
+  try {
+
+    await signOut(auth);
+
+  } catch (error) {
+
+    alert(friendlyError(error));
+  }
+};
+
+
+window.resetPassword = async function() {
+
+  clearAuthMessage();
+
+  let email = $("loginEmail").value.trim();
+
+  if (!email) {
+    email = prompt("Enter the email address for your Tip Tracker account:") || "";
+    email = email.trim();
+  }
+
+  if (!email) return;
+
+  try {
+
+    await sendPasswordResetEmail(auth, email);
+
+    showAuthMessage(
+      "Password reset email sent. Check your inbox.",
+      "success"
+    );
+
+  } catch (error) {
+
+    showAuthMessage(friendlyError(error));
+  }
+};
+
+
+/* ==================== FIRESTORE PATHS ==================== */
+
+function userDocRef() {
+  return doc(db, "users", currentUser.uid);
+}
+
+
+function settingsDocRef() {
+  return doc(db, "users", currentUser.uid, "settings", "profile");
+}
+
+
+function shiftsCollectionRef() {
+  return collection(db, "users", currentUser.uid, "shifts");
+}
+
+
+function shiftDocRef(key) {
+  return doc(db, "users", currentUser.uid, "shifts", key);
+}
+
+
+/* ==================== LOAD CLOUD DATA ==================== */
+
+async function loadCloudData() {
+
+  if (!currentUser) return;
+
+  setSyncStatus("Syncing…");
+
+  try {
+
+    const settingsSnapshot = await getDoc(settingsDocRef());
+
+    if (settingsSnapshot.exists()) {
+
+      const cloudSettings = settingsSnapshot.data();
+
+      settings = {
+        wage:
+          Number(cloudSettings.wage ?? 8),
+
+        tax:
+          Number(cloudSettings.tax ?? 18)
+      };
+
+    } else {
+
+      await setDoc(settingsDocRef(), settings);
+    }
+
+
+    const shiftSnapshot =
+      await getDocs(shiftsCollectionRef());
+
+    shifts = {};
+
+    shiftSnapshot.forEach(documentSnapshot => {
+
+      shifts[documentSnapshot.id] =
+        documentSnapshot.data();
+    });
+
+
+    $("defaultWage").value = settings.wage;
+    $("taxRate").value = settings.tax;
+
+    renderCalendar();
+
+    setSyncStatus("Cloud synced ✓", "good");
+
+    checkForLocalData();
+
+  } catch (error) {
+
+    console.error(error);
+
+    setSyncStatus("Sync error", "bad");
+
+    alert(
+      "Tip Tracker couldn't load your cloud data. " +
+      friendlyError(error)
+    );
+  }
+}
+
+
+/* ==================== LOCAL DATA IMPORT ==================== */
+
+function getLocalData() {
+
+  let localShifts = {};
+  let localSettings = null;
+
+  try {
+
+    localShifts =
+      JSON.parse(
+        localStorage.getItem("tipTrackerShifts") || "{}"
+      ) || {};
+
+  } catch {
+    localShifts = {};
+  }
+
+
+  try {
+
+    localSettings =
+      JSON.parse(
+        localStorage.getItem("tipTrackerSettings") || "null"
+      );
+
+  } catch {
+    localSettings = null;
+  }
+
+
+  return {
+    shifts: localShifts,
+    settings: localSettings
+  };
+}
+
+
+function checkForLocalData() {
+
+  const local = getLocalData();
+
+  const hasShifts =
+    Object.keys(local.shifts).length > 0;
+
+  const hasSettings =
+    local.settings &&
+    (
+      local.settings.wage !== undefined ||
+      local.settings.tax !== undefined
+    );
+
+  const dismissed =
+    sessionStorage.getItem("tipTrackerImportDismissed") === "1";
+
+  if ((hasShifts || hasSettings) && !dismissed) {
+    $("importBox").style.display = "block";
+  } else {
+    $("importBox").style.display = "none";
+  }
+}
+
+
+window.dismissImport = function() {
+
+  sessionStorage.setItem(
+    "tipTrackerImportDismissed",
+    "1"
+  );
+
+  $("importBox").style.display = "none";
+};
+
+
+window.importLocalData = async function() {
+
+  if (!currentUser) return;
+
+  const local = getLocalData();
+
+  const shiftEntries =
+    Object.entries(local.shifts);
+
+  if (
+    shiftEntries.length === 0 &&
+    !local.settings
+  ) {
+    alert("No local data was found.");
+    $("importBox").style.display = "none";
+    return;
+  }
+
+
+  const confirmed = confirm(
+    "Import the shifts and settings stored on this device into your cloud account? Existing cloud shifts with the same date will be replaced."
+  );
+
+  if (!confirmed) return;
+
+
+  setSyncStatus("Importing…");
+
+  try {
+
+    /*
+      Firestore batches support up to 500 writes.
+      We use chunks safely below that limit.
+    */
+
+    const chunkSize = 400;
+
+    for (
+      let start = 0;
+      start < shiftEntries.length;
+      start += chunkSize
+    ) {
+
+      const batch = writeBatch(db);
+
+      const chunk =
+        shiftEntries.slice(
+          start,
+          start + chunkSize
+        );
+
+      chunk.forEach(([key, shift]) => {
+
+        batch.set(
+          shiftDocRef(key),
+          normalizeShift(shift)
+        );
+      });
+
+      await batch.commit();
+    }
+
+
+    if (local.settings) {
+
+      const importedSettings = {
+        wage:
+          Number(
+            local.settings.wage ??
+            settings.wage
+          ),
+
+        tax:
+          Number(
+            local.settings.tax ??
+            settings.tax
+          )
+      };
+
+      await setDoc(
+        settingsDocRef(),
+        importedSettings
+      );
+    }
+
+
+    $("importBox").style.display = "none";
+
+    await loadCloudData();
+
+    alert(
+      "Your existing Tip Tracker data has been imported to the cloud."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    setSyncStatus("Import failed", "bad");
+
+    alert(
+      "The import couldn't be completed. " +
+      friendlyError(error)
+    );
+  }
+};
+
+
+/* ==================== SHIFT HELPERS ==================== */
+
+function normalizeShift(shift) {
+
+  return {
+    hours: Number(shift?.hours) || 0,
+    wage: Number(shift?.wage) || 0,
+    cash: Number(shift?.cash) || 0,
+    credit: Number(shift?.credit) || 0
+  };
+}
+
+
+/* ==================== CALENDAR ==================== */
+
 function renderCalendar() {
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  document.getElementById("monthTitle").textContent =
-    currentDate.toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric"
-    });
+  $("monthTitle").textContent =
+    currentDate.toLocaleDateString(
+      "en-US",
+      {
+        month: "long",
+        year: "numeric"
+      }
+    );
 
-  const calendar = document.getElementById("calendar");
+  const calendar = $("calendar");
   calendar.innerHTML = "";
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay =
+    new Date(year, month, 1).getDay();
+
+  const daysInMonth =
+    new Date(year, month + 1, 0).getDate();
+
 
   for (let i = 0; i < firstDay; i++) {
-    const blank = document.createElement("div");
+
+    const blank =
+      document.createElement("div");
+
     blank.className = "day empty";
+
     calendar.appendChild(blank);
   }
 
-  for (let day = 1; day <= daysInMonth; day++) {
 
-    const key = dateKey(year, month, day);
+  for (
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ) {
+
+    const key =
+      dateKey(year, month, day);
+
     const shift = shifts[key];
 
-    const el = document.createElement("div");
-    el.className = "day" + (shift ? " has-shift" : "");
+    const el =
+      document.createElement("div");
+
+    el.className =
+      "day" +
+      (shift ? " has-shift" : "");
+
 
     let total = "";
 
     if (shift) {
-      const gross =
-        Number(shift.hours) * Number(shift.wage) +
-        Number(shift.cash) +
-        Number(shift.credit);
 
-      total = `<div class="day-total">${money(gross)}</div>`;
+      const normalized =
+        normalizeShift(shift);
+
+      const gross =
+        normalized.hours *
+        normalized.wage +
+        normalized.cash +
+        normalized.credit;
+
+      total =
+        `<div class="day-total">${money(gross)}</div>`;
     }
+
 
     el.innerHTML =
       `<div class="day-number">${day}</div>${total}`;
@@ -435,124 +1283,319 @@ function renderCalendar() {
 }
 
 
-function changeMonth(amount) {
-  currentDate.setMonth(currentDate.getMonth() + amount);
-  renderCalendar();
-}
+window.changeMonth = function(amount) {
 
+  currentDate.setMonth(
+    currentDate.getMonth() + amount
+  );
+
+  renderCalendar();
+};
+
+
+/* ==================== SHIFT MODAL ==================== */
 
 function openShift(key) {
 
   selectedDate = key;
 
-  const shift = shifts[key] || {
-    hours: "",
-    wage: settings.wage,
-    cash: "",
-    credit: ""
-  };
+  const shift =
+    shifts[key] || {
+      hours: "",
+      wage: settings.wage,
+      cash: "",
+      credit: ""
+    };
 
-  document.getElementById("shiftDate").textContent =
-    new Date(key + "T12:00:00").toLocaleDateString("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric"
-    });
 
-  document.getElementById("hours").value = shift.hours;
-  document.getElementById("wage").value = shift.wage;
-  document.getElementById("cash").value = shift.cash;
-  document.getElementById("credit").value = shift.credit;
+  $("shiftDate").textContent =
+    new Date(
+      key + "T12:00:00"
+    ).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+      }
+    );
 
-  document.getElementById("shiftModal").style.display = "flex";
+
+  $("hours").value = shift.hours;
+  $("wage").value = shift.wage;
+  $("cash").value = shift.cash;
+  $("credit").value = shift.credit;
+
+  $("shiftModal").style.display = "flex";
 
   calculateShift();
 }
 
 
-function closeModal() {
-  document.getElementById("shiftModal").style.display = "none";
-}
+window.closeModal = function() {
+  $("shiftModal").style.display = "none";
+};
 
 
 function calculateShift() {
 
-  const hours = Number(document.getElementById("hours").value) || 0;
-  const wage = Number(document.getElementById("wage").value) || 0;
-  const cash = Number(document.getElementById("cash").value) || 0;
-  const credit = Number(document.getElementById("credit").value) || 0;
+  const hours =
+    Number($("hours").value) || 0;
 
-  const wages = hours * wage;
-  const gross = wages + cash + credit;
+  const wage =
+    Number($("wage").value) || 0;
 
-  // Budgeting estimate: tax applies to wages + all tips.
-  const estimatedTax = gross * (settings.tax / 100);
+  const cash =
+    Number($("cash").value) || 0;
 
-  const net = gross - estimatedTax;
+  const credit =
+    Number($("credit").value) || 0;
 
-  const hourly = hours ? gross / hours : 0;
 
-  document.getElementById("calcWages").textContent = money(wages);
-  document.getElementById("calcGross").textContent = money(gross);
-  document.getElementById("calcTax").textContent = money(estimatedTax);
-  document.getElementById("calcNet").textContent = money(net);
-  document.getElementById("calcHourly").textContent = money(hourly);
+  const wages =
+    hours * wage;
+
+  const gross =
+    wages + cash + credit;
+
+  /*
+    Simplified budgeting estimate.
+    Tips, including cash tips, may be taxable.
+  */
+
+  const estimatedTax =
+    gross * (settings.tax / 100);
+
+  const net =
+    gross - estimatedTax;
+
+  const hourly =
+    hours ? gross / hours : 0;
+
+
+  $("calcWages").textContent =
+    money(wages);
+
+  $("calcGross").textContent =
+    money(gross);
+
+  $("calcTax").textContent =
+    money(estimatedTax);
+
+  $("calcNet").textContent =
+    money(net);
+
+  $("calcHourly").textContent =
+    money(hourly);
 }
 
 
-["hours","wage","cash","credit"].forEach(id => {
-  document.getElementById(id).addEventListener("input", calculateShift);
+["hours","wage","cash","credit"]
+.forEach(id => {
+
+  $(id).addEventListener(
+    "input",
+    calculateShift
+  );
 });
 
 
-function saveShift() {
+window.saveShift = async function() {
 
-  shifts[selectedDate] = {
-    hours: Number(document.getElementById("hours").value) || 0,
-    wage: Number(document.getElementById("wage").value) || 0,
-    cash: Number(document.getElementById("cash").value) || 0,
-    credit: Number(document.getElementById("credit").value) || 0
+  if (!currentUser || !selectedDate)
+    return;
+
+
+  const newShift = {
+
+    hours:
+      Number($("hours").value) || 0,
+
+    wage:
+      Number($("wage").value) || 0,
+
+    cash:
+      Number($("cash").value) || 0,
+
+    credit:
+      Number($("credit").value) || 0
   };
 
-  localStorage.setItem("tipTrackerShifts", JSON.stringify(shifts));
 
-  closeModal();
-  renderCalendar();
-}
+  const button =
+    $("saveShiftButton");
 
+  button.disabled = true;
+  button.textContent = "Saving…";
 
-function deleteShift() {
-
-  if (!selectedDate) return;
-
-  delete shifts[selectedDate];
-
-  localStorage.setItem("tipTrackerShifts", JSON.stringify(shifts));
-
-  closeModal();
-  renderCalendar();
-}
+  setSyncStatus("Saving…");
 
 
-function saveSettings() {
+  try {
 
-  settings.wage =
-    Number(document.getElementById("defaultWage").value) || 0;
+    await setDoc(
+      shiftDocRef(selectedDate),
+      newShift
+    );
 
-  settings.tax =
-    Number(document.getElementById("taxRate").value) || 0;
+    shifts[selectedDate] =
+      newShift;
 
-  localStorage.setItem("tipTrackerSettings", JSON.stringify(settings));
+    closeModal();
+    renderCalendar();
 
-  alert("Settings saved.");
-  updateSummary();
-}
+    setSyncStatus(
+      "Cloud synced ✓",
+      "good"
+    );
 
+  } catch (error) {
+
+    console.error(error);
+
+    setSyncStatus(
+      "Save failed",
+      "bad"
+    );
+
+    alert(
+      "Your shift wasn't saved. " +
+      friendlyError(error)
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Save";
+  }
+};
+
+
+window.deleteShift = async function() {
+
+  if (!currentUser || !selectedDate)
+    return;
+
+
+  if (!shifts[selectedDate]) {
+    closeModal();
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Delete this shift? This will also remove it from your cloud account."
+    );
+
+  if (!confirmed) return;
+
+
+  setSyncStatus("Deleting…");
+
+
+  try {
+
+    await deleteDoc(
+      shiftDocRef(selectedDate)
+    );
+
+    delete shifts[selectedDate];
+
+    closeModal();
+    renderCalendar();
+
+    setSyncStatus(
+      "Cloud synced ✓",
+      "good"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    setSyncStatus(
+      "Delete failed",
+      "bad"
+    );
+
+    alert(
+      "The shift couldn't be deleted. " +
+      friendlyError(error)
+    );
+  }
+};
+
+
+/* ==================== SETTINGS ==================== */
+
+window.saveSettings = async function() {
+
+  if (!currentUser) return;
+
+
+  const newSettings = {
+
+    wage:
+      Number(
+        $("defaultWage").value
+      ) || 0,
+
+    tax:
+      Number(
+        $("taxRate").value
+      ) || 0
+  };
+
+
+  setSyncStatus("Saving settings…");
+
+
+  try {
+
+    await setDoc(
+      settingsDocRef(),
+      newSettings
+    );
+
+    settings = newSettings;
+
+    updateSummary();
+
+    setSyncStatus(
+      "Cloud synced ✓",
+      "good"
+    );
+
+    alert("Settings saved to your account.");
+
+  } catch (error) {
+
+    console.error(error);
+
+    setSyncStatus(
+      "Settings save failed",
+      "bad"
+    );
+
+    alert(
+      "Settings couldn't be saved. " +
+      friendlyError(error)
+    );
+  }
+};
+
+
+/* ==================== SUMMARY ==================== */
 
 function updateSummary() {
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const year =
+    currentDate.getFullYear();
+
+  const month =
+    currentDate.getMonth();
+
 
   let hours = 0;
   let wages = 0;
@@ -560,56 +1603,128 @@ function updateSummary() {
   let credit = 0;
   let count = 0;
 
-  Object.entries(shifts).forEach(([key, shift]) => {
 
-    const d = new Date(key + "T12:00:00");
+  Object.entries(shifts)
+  .forEach(([key, rawShift]) => {
 
-    if (d.getFullYear() === year && d.getMonth() === month) {
+    const d =
+      new Date(key + "T12:00:00");
 
-      const h = Number(shift.hours) || 0;
-      const w = Number(shift.wage) || 0;
+    if (
+      d.getFullYear() === year &&
+      d.getMonth() === month
+    ) {
 
-      hours += h;
-      wages += h * w;
-      cash += Number(shift.cash) || 0;
-      credit += Number(shift.credit) || 0;
+      const shift =
+        normalizeShift(rawShift);
+
+      hours += shift.hours;
+
+      wages +=
+        shift.hours *
+        shift.wage;
+
+      cash += shift.cash;
+
+      credit += shift.credit;
 
       count++;
     }
   });
 
-  const gross = wages + cash + credit;
-  const tax = gross * (settings.tax / 100);
-  const net = gross - tax;
-  const avg = hours ? gross / hours : 0;
 
-  document.getElementById("totalHours").textContent =
+  const gross =
+    wages + cash + credit;
+
+  const tax =
+    gross * (settings.tax / 100);
+
+  const net =
+    gross - tax;
+
+  const avg =
+    hours ? gross / hours : 0;
+
+
+  $("totalHours").textContent =
     hours.toFixed(2);
 
-  document.getElementById("totalWages").textContent =
+  $("totalWages").textContent =
     money(wages);
 
-  document.getElementById("totalCredit").textContent =
+  $("totalCredit").textContent =
     money(credit);
 
-  document.getElementById("totalCash").textContent =
+  $("totalCash").textContent =
     money(cash);
 
-  document.getElementById("totalGross").textContent =
+  $("totalGross").textContent =
     money(gross);
 
-  document.getElementById("totalNet").textContent =
+  $("totalNet").textContent =
     money(net);
 
-  document.getElementById("hourlyAverage").textContent =
+  $("hourlyAverage").textContent =
     money(avg);
 
-  document.getElementById("shiftCount").textContent =
+  $("shiftCount").textContent =
     count;
 }
 
 
-renderCalendar();
+/* ==================== AUTH STATE ==================== */
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    if (user) {
+
+      currentUser = user;
+
+      $("authScreen").style.display =
+        "none";
+
+      $("appScreen").style.display =
+        "block";
+
+      $("accountEmail").textContent =
+        user.email || "Signed in";
+
+      await loadCloudData();
+
+    } else {
+
+      currentUser = null;
+      shifts = {};
+
+      $("appScreen").style.display =
+        "none";
+
+      $("authScreen").style.display =
+        "flex";
+
+      $("shiftModal").style.display =
+        "none";
+
+      clearAuthMessage();
+    }
+  }
+);
+
+
+/* Enter key signs in */
+
+$("loginPassword")
+.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Enter") {
+      loginUser();
+    }
+  }
+);
 
 </script>
 
